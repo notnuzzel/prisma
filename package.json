@@ -1,20 +1,11 @@
 {
   "name": "@notnuzzel/prisma",
-  "version": "1.0.1",
-  "main": "./lib/index.js",
-  "files": [
-    "lib/"
-  ],
-  "scripts": {
-    "clean": "rimraf ./lib/",
-    "build": "ncc build index.js -o lib"
+  "version": "1.0.2",
+  "main": "index.js",
+  "devDependencies": {
+    "prisma": "^2.22.0"
   },
   "dependencies": {
-    "@prisma/client": "^2.22.0"
-  },
-  "devDependencies": {
-    "@vercel/ncc": "^0.28.5",
-    "prisma": "^2.22.0",
-    "rimraf": "^3.0.2"
+    "@prisma/client": "^2.22.1"
   }
 }
