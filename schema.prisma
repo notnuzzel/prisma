@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/client"
+  provider      = "prisma-client-js"
+  output        = "./generated/client"
   binaryTargets = ["native", "darwin", "debian-openssl-1.1.x", "linux-musl"]
 }
 
@@ -10,7 +10,7 @@ datasource db {
 }
 
 model Account {
-  id                 Int       @default(autoincrement()) @id
+  id                 Int       @id @default(autoincrement())
   compoundId         String    @unique @map(name: "compound_id")
   userId             Int       @map(name: "user_id")
   providerType       String    @map(name: "provider_type")
@@ -22,15 +22,15 @@ model Account {
   createdAt          DateTime  @default(now()) @map(name: "created_at")
   updatedAt          DateTime  @default(now()) @map(name: "updated_at")
 
+
   @@index([providerAccountId], name: "providerAccountId")
   @@index([providerId], name: "providerId")
   @@index([userId], name: "userId")
-
   @@map(name: "accounts")
 }
 
 model Session {
-  id           Int      @default(autoincrement()) @id
+  id           Int      @id @default(autoincrement())
   userId       Int      @map(name: "user_id")
   expires      DateTime
   sessionToken String   @unique @map(name: "session_token")
@@ -42,11 +42,12 @@ model Session {
 }
 
 model User {
-  id            Int       @default(autoincrement()) @id
+  id            Int       @id @default(autoincrement())
   name          String?
   email         String?   @unique
   emailVerified DateTime? @map(name: "email_verified")
   image         String?
+  crawls        Crawl[]
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
@@ -54,12 +55,68 @@ model User {
 }
 
 model VerificationRequest {
-  id         Int      @default(autoincrement()) @id
+  id         Int      @id @default(autoincrement())
   identifier String
   token      String   @unique
   expires    DateTime
-  createdAt  DateTime  @default(now()) @map(name: "created_at")
-  updatedAt  DateTime  @default(now()) @map(name: "updated_at")
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  updatedAt  DateTime @default(now()) @map(name: "updated_at")
 
   @@map(name: "verification_requests")
+}
+
+model Crawl {
+  id        Int      @id @default(autoincrement())
+  accountId Int      @map(name: "account_id")
+  userId    Int      @map(name: "user_id")
+  user      User     @relation(fields: [userId], references: [id])
+  tweetId   Int      @map(name: "tweet_id")
+  tweet     Tweet    @relation(fields: [tweetId], references: [id])
+  articleId Int      @map(name: "article_id")
+  article   Article  @relation(fields: [articleId], references: [id])
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "crawls")
+}
+
+model Article {
+  id        Int      @id @default(autoincrement())
+  href      String
+  title     String
+  publisher String
+  byline    String
+  heroImage String   @map(name: "hero_image")
+  tweets    Tweet[]
+  crawls    Crawl[]
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "articles")
+}
+
+model Tweet {
+  id          Int      @id
+  idStr       String   @map(name: "id_str")
+  fullText    String   @map(name: "full_text")
+  publishedAt DateTime @map(name: "published_at")
+  articleId   Int      @map(name: "article_id")
+  article     Article  @relation(fields: [articleId], references: [id])
+  crawls      Crawl[]
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "tweets")
+}
+
+model Handle {
+  id           Int      @id
+  screenName   String   @map(name: "screen_name")
+  displayName  String   @map(name: "display_name")
+  protected    Boolean
+  profileImage String   @map(name: "profile_image")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "handles")
 }

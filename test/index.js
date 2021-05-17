@@ -2,7 +2,8 @@
 import prisma from '../lib/'
 
 const main = async () => {
-  await prisma.user.findMany()
+  const account = await prisma.account.findMany()
+  console.log(account)
   process.exit()
 }
 

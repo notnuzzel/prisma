@@ -1,6 +1,6 @@
 {
   "name": "@notnuzzel/prisma",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "lib/index.js",
   "files": [
     "lib/"
@@ -15,7 +15,8 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@prisma/client": "^2.22.1"
+    "@prisma/client": "^2.22.1",
+    "metascraper": "^5.21.7"
   },
   "scripts": {
     "clean": "rimraf generated/ lib/",
