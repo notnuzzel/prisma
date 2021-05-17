@@ -81,16 +81,17 @@ model Crawl {
 }
 
 model Article {
-  id        Int      @id @default(autoincrement())
-  href      String
-  title     String
-  publisher String
-  byline    String
-  heroImage String   @map(name: "hero_image")
-  tweets    Tweet[]
-  crawls    Crawl[]
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  id          Int      @id @default(autoincrement())
+  href        String
+  title       String
+  description String
+  publisher   String
+  byline      String
+  heroImage   String   @map(name: "hero_image")
+  tweets      Tweet[]
+  crawls      Crawl[]
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @default(now()) @map(name: "updated_at")
 
   @@map(name: "articles")
 }
@@ -100,6 +101,8 @@ model Tweet {
   idStr       String   @map(name: "id_str")
   fullText    String   @map(name: "full_text")
   publishedAt DateTime @map(name: "published_at")
+  authorId    Int
+  author      Handle   @relation(fields: [authorId], references: [id])
   articleId   Int      @map(name: "article_id")
   article     Article  @relation(fields: [articleId], references: [id])
   crawls      Crawl[]
@@ -115,6 +118,7 @@ model Handle {
   displayName  String   @map(name: "display_name")
   protected    Boolean
   profileImage String   @map(name: "profile_image")
+  tweets       Tweet[]
   createdAt    DateTime @default(now()) @map(name: "created_at")
   updatedAt    DateTime @default(now()) @map(name: "updated_at")
 
