@@ -82,12 +82,13 @@ model Crawl {
 
 model Article {
   id          Int      @id @default(autoincrement())
-  href        String
+  href        String   @unique
   title       String
   description String
   publisher   String
   byline      String
   heroImage   String   @map(name: "hero_image")
+  publishedAt DateTime @map(name: "published_at")
   tweets      Tweet[]
   crawls      Crawl[]
   createdAt   DateTime @default(now()) @map(name: "created_at")
