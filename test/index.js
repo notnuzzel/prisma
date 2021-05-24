@@ -1,5 +1,5 @@
 
-import prisma from '../lib/'
+import prisma from '../index'
 
 const main = async () => {
   const account = await prisma.account.findMany()

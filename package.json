@@ -1,16 +1,14 @@
 {
   "name": "@notnuzzel/prisma",
-  "version": "1.0.9",
-  "main": "lib/index.js",
+  "version": "1.0.10",
+  "main": "index.js",
   "files": [
-    "lib/"
+    "index.js",
+    "schema.prisma"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.14.3",
-    "@babel/core": "^7.14.3",
-    "@babel/node": "^7.14.2",
-    "@babel/preset-env": "^7.14.2",
-    "dotenv": "^9.0.2",
+    "@vercel/ncc": "^0.28.5",
+    "dotenv": "^10.0.0",
     "prisma": "^2.23.0",
     "rimraf": "^3.0.2"
   },
@@ -18,8 +16,8 @@
     "@prisma/client": "^2.23.0"
   },
   "scripts": {
-    "clean": "rimraf generated/ lib/",
-    "build": "prisma generate && babel index.js -d lib && cp -R generated lib/generated",
-    "test": "dotenv babel-node test"
+    "test": "dotenv ncc run test/",
+    "generate": "prisma generate",
+    "postinstall": "prisma generate"
   }
 }
