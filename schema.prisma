@@ -18,6 +18,8 @@ model Account {
   refreshToken       String?   @map(name: "refresh_token")
   accessToken        String?   @map(name: "access_token")
   accessTokenExpires DateTime? @map(name: "access_token_expires")
+  shares             Share[]
+  crawls             Crawl[]
   createdAt          DateTime  @default(now()) @map(name: "created_at")
   updatedAt          DateTime  @default(now()) @map(name: "updated_at")
 
@@ -47,6 +49,7 @@ model User {
   emailVerified DateTime? @map(name: "email_verified")
   image         String?
   crawls        Crawl[]
+  shares        Share[]
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
@@ -67,16 +70,33 @@ model VerificationRequest {
 model Crawl {
   id        Int      @id @default(autoincrement())
   accountId Int      @map(name: "account_id")
+  account   Account  @relation(fields: [accountId], references: [id])
   userId    Int      @map(name: "user_id")
   user      User     @relation(fields: [userId], references: [id])
-  tweetId   Int      @map(name: "tweet_id")
+  shares    Share[]
+  sinceId   String?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "crawls")
+}
+
+model Share {
+  id        Int      @id @default(autoincrement())
+  accountId Int      @map(name: "account_id")
+  account   Account  @relation(fields: [accountId], references: [id])
+  userId    Int      @map(name: "user_id")
+  user      User     @relation(fields: [userId], references: [id])
+  crawlId   Int      @map(name: "crawl_id")
+  crawl     Crawl    @relation(fields: [crawlId], references: [id])
+  tweetId   String   @map(name: "tweet_id")
   tweet     Tweet    @relation(fields: [tweetId], references: [id])
   articleId Int      @map(name: "article_id")
   article   Article  @relation(fields: [articleId], references: [id])
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
 
-  @@map(name: "crawls")
+  @@map(name: "shares")
 }
 
 model Article {
@@ -89,7 +109,7 @@ model Article {
   heroImage   String   @map(name: "hero_image")
   publishedAt DateTime @map(name: "published_at")
   tweets      Tweet[]
-  crawls      Crawl[]
+  shares      Share[]
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @default(now()) @map(name: "updated_at")
 
@@ -97,15 +117,14 @@ model Article {
 }
 
 model Tweet {
-  id          Int      @id
-  idStr       String   @map(name: "id_str")
+  id          String   @id
   fullText    String   @map(name: "full_text")
   publishedAt DateTime @map(name: "published_at")
-  authorId    Int
+  authorId    String
   author      Handle   @relation(fields: [authorId], references: [id])
   articleId   Int      @map(name: "article_id")
   article     Article  @relation(fields: [articleId], references: [id])
-  crawls      Crawl[]
+  shares      Share[]
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @default(now()) @map(name: "updated_at")
 
@@ -113,7 +132,7 @@ model Tweet {
 }
 
 model Handle {
-  id           Int      @id
+  id           String   @id
   screenName   String   @map(name: "screen_name")
   displayName  String   @map(name: "display_name")
   protected    Boolean
