@@ -110,10 +110,22 @@ model Article {
   publishedAt DateTime @map(name: "published_at")
   tweets      Tweet[]
   shares      Share[]
+  redirects   ArticleRedirect[]
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @default(now()) @map(name: "updated_at")
 
   @@map(name: "articles")
+}
+
+model ArticleRedirect {
+  id          Int       @id @default(autoincrement())
+  articleId   Int       @map(name: "article_id")
+  article     Article   @relation(fields: [articleId], references: [id])
+  href        String    @unique
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map(name: "article_redirects")
 }
 
 model Tweet {
