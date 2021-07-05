@@ -1,6 +1,5 @@
-
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
-
-export default prisma
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var _client = require("@prisma/client");
+const prisma = new _client.PrismaClient();
+exports.default = prisma;

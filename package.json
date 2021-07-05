@@ -1,23 +1,22 @@
 {
   "name": "@notnuzzel/prisma",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "main": "index.js",
   "files": [
     "index.js",
     "schema.prisma"
   ],
   "devDependencies": {
-    "@vercel/ncc": "^0.28.6",
-    "dotenv": "^10.0.0",
-    "rimraf": "^3.0.2"
+    "dotenv-cli": "^4.0.0",
+    "esm": "^3.2.25",
+    "prisma": "^2.26.0",
+    "regenerator-runtime": "^0.13.7"
   },
   "dependencies": {
-    "@prisma/client": "^2.24.1",
-    "prisma": "^2.24.1"
+    "@prisma/client": "^2.26.0"
   },
   "scripts": {
-    "test": "dotenv ncc run test/",
-    "generate": "prisma generate",
+    "dev": "dotenv -- node -r esm test/",
     "postinstall": "prisma generate"
   }
 }
