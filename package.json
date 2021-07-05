@@ -1,6 +1,6 @@
 {
   "name": "@notnuzzel/prisma",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "main": "index.js",
   "files": [
     "index.js",
@@ -9,11 +9,11 @@
   "devDependencies": {
     "dotenv-cli": "^4.0.0",
     "esm": "^3.2.25",
-    "prisma": "^2.26.0",
     "regenerator-runtime": "^0.13.7"
   },
   "dependencies": {
-    "@prisma/client": "^2.26.0"
+    "@prisma/client": "^2.26.0",
+    "prisma": "^2.26.0"
   },
   "scripts": {
     "dev": "dotenv -- node -r esm test/",
